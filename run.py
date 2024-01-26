@@ -16,13 +16,18 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 # Change directory to where your HTML file is located
 os.chdir(current_dir)
 
+class MyHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        self.path = 'home.html'  # Specify the file to be served
+        return http.server.SimpleHTTPRequestHandler.do_GET(self)
+
 # Check if home.html file exists
 if os.path.exists("home.html"):
     # Print the IP address
     print(f"Server started at http://{local_ip}:{PORT}")
 
     # Create a TCP server
-    with socketserver.TCPServer(("", PORT), http.server.SimpleHTTPRequestHandler) as httpd:
+    with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
         print("Serving HTTP on", httpd.server_address)
         # Serve indefinitely
         httpd.serve_forever()
