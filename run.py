@@ -1,24 +1,24 @@
-import http.server
-import socketserver
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+import os
 
-# Define the port number
-PORT = 8080
+PORT = 8000  # Specify the port number here
 
-# Define the request handler class
-class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
+# Get the path to the home.html file
+home_html_path = os.path.join(os.getcwd(), "home.html")
+
+# Create the SimpleHTTPRequestHandler class
+class MyHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        # Specify the content type as HTML
-        self.send_header('Content-type', 'text/html')
-        # Call the base class method to process the request
-        http.server.SimpleHTTPRequestHandler.do_GET(self)
+        # Check if the requested path is the home page
+        if self.path == "/":
+            self.path = home_html_path
 
-# Set the directory where the HTML file is located
-DIRECTORY = "."
+        # Serve the requested file
+        super().do_GET()
 
-# Create a TCP server
-with socketserver.TCPServer(("", PORT), MyHttpRequestHandler) as httpd:
-    print("Server running at port", PORT)
-    # Change the current directory to the directory where the HTML file is located
-    httpd.RequestHandlerClass.directory = DIRECTORY
-    # Start the server
-    httpd.serve_forever()
+# Start the server
+server = HTTPServer(("", PORT), MyHandler)
+print(f"Server started on port {PORT}")
+
+# Start serving forever
+server.serve_forever()
