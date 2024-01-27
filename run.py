@@ -1,35 +1,24 @@
 import http.server
 import socketserver
-import socket
-import os
 
-# Set the port number you want to use
-PORT = 8000
+# Define the port number
+PORT = 8080
 
-# Get the local IP address of the machine
-hostname = socket.gethostname()
-local_ip = socket.gethostbyname(hostname)
-
-# Get the current directory
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Change directory to where your HTML file is located
-os.chdir(current_dir)
-
-class MyHandler(http.server.SimpleHTTPRequestHandler):
+# Define the request handler class
+class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        self.path = 'home.html'  # Specify the file to be served
-        return http.server.SimpleHTTPRequestHandler.do_GET(self)
+        # Specify the content type as HTML
+        self.send_header('Content-type', 'text/html')
+        # Call the base class method to process the request
+        http.server.SimpleHTTPRequestHandler.do_GET(self)
 
-# Check if home.html file exists
-if os.path.exists("home.html"):
-    # Print the IP address
-    print(f"Server started at http://{local_ip}:{PORT}")
+# Set the directory where the HTML file is located
+DIRECTORY = "."
 
-    # Create a TCP server
-    with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
-        print("Serving HTTP on", httpd.server_address)
-        # Serve indefinitely
-        httpd.serve_forever()
-else:
-    print("Error: 'home.html' file not found in the current directory.")
+# Create a TCP server
+with socketserver.TCPServer(("", PORT), MyHttpRequestHandler) as httpd:
+    print("Server running at port", PORT)
+    # Change the current directory to the directory where the HTML file is located
+    httpd.RequestHandlerClass.directory = DIRECTORY
+    # Start the server
+    httpd.serve_forever()
