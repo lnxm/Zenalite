@@ -1,32 +1,23 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
 import socket
 import os
 
-HOST = 'localhost'  # Change this to your computer's IP address if it's not 'localhost'
-PORT = 8000  # Specify the port number here
+def main():
+    ip_address = socket.gethostbyname(socket.gethostname())
 
-# Get the path to the home.html file
-home_html_path = os.path.join(os.getcwd(), "home.html")
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind((ip_address, 80))
+    server_socket.listen(1)
 
-# Create the SimpleHTTPRequestHandler class
-class MyHandler(SimpleHTTPRequestHandler):
-    def do_GET(self):
-        # Check if the requested path is the home page
-        if self.path == "/":
-            self.path = home_html_path
+    with open("home.html", "r") as f:
+        home_html = f.read()
 
-        # Serve the requested file
-        super().do_GET()
+    while True:
+        client_socket, address = server_socket.accept()
 
-# Get the local IP address
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-ip = s.getsockname()[0]
-s.close()
+        client_socket.sendall(home_html.encode())
 
-# Start the server
-server = HTTPServer((ip, PORT), MyHandler)
-print(f"Serving on {HOST}:{PORT}")
+        client_socket.close()
 
-# Start serving forever
-server.serve_forever()
+if __name__ == "__main__":
+    main()
