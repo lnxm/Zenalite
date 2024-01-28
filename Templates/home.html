@@ -1,12 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
+  <style>
+    /* CSS */
+    .button-27 {
+      appearance: none;
+      background-color: #000000;
+      border: 2px solid #1A1A1A;
+      border-radius: 15px;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: inline-block;
+      font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      font-size: 16px;
+      font-weight: 600;
+      line-height: normal;
+      margin: 0;
+      min-height: 60px;
+      min-width: 0;
+      outline: none;
+      padding: 16px 24px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      width: 100%;
+      will-change: transform;
+    }
+
+    .button-27:disabled {
+      pointer-events: none;
+    }
+
+    .button-27:hover {
+      box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+      transform: translateY(-2px);
+    }
+
+    .button-27:active {
+      box-shadow: none;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 
 <body>
   <h1>Zena Lite</h1>
-
+  <img src="https://media.discordapp.net/attachments/660074147338125314/1201126297062093003/tenor.gif?ex=65c8af09&is=65b63a09&hm=3c8f92cf4f68399a53d5e726c7daeb030f8971eb23401cdd7d9542a97ee6d3b1&" 
+    height="300" width="500">
+  <img src="https://media.discordapp.net/attachments/876154365566672947/950158122947846184/08978764.gif?ex=65c00fb5&is=65ad9ab5&hm=2b2e295bf025fec5f5dfc0c83626520fc4dbac05e8eaf4919bc81169d795eeb1&">
+  <a href="https://www.rouming.cz/forumdata/18767KOKOT.jpg">Dukaz ze Dostal ho ma</a>
+  
   <script>
     var answer = prompt("Je Dostalova mama sexy?");
 
@@ -17,6 +67,19 @@
    
     }
   </script>
+
+<h1 id="clicks">0</h1>
+<button class="button-27" id="clickButton">Dostal ho nema</button>
+
+<script>
+  let clickCount = 0;
+
+  document.getElementById("clickButton").addEventListener("click", function() {
+    clickCount++;
+    document.getElementById("clicks").textContent = clickCount;
+  });
+</script>
+
 </body>
 
 </html>
