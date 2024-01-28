@@ -1,23 +1,15 @@
-import socket
-import os
+import subprocess
 
-def main():
-    ip_address = socket.gethostbyname(socket.gethostname())
+# Install Flask
+subprocess.call(['pip', 'install', 'Flask'])
 
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server_socket.bind((ip_address, 80))
-    server_socket.listen(1)
+from flask import Flask, render_template
 
-    with open("home.html", "r") as f:
-        home_html = f.read()
+app = Flask(__name__)
 
-    while True:
-        client_socket, address = server_socket.accept()
+@app.route('/')
+def home():
+    return render_template('home.html')
 
-        client_socket.sendall(home_html.encode())
-
-        client_socket.close()
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(debug=True)
